@@ -38,19 +38,16 @@
       0% { color: #ffc107; opacity: 1; filter: drop-shadow(0 0 8px #ffc107); }
       100% { color: #ffeb3b; opacity: 0.4; filter: drop-shadow(0 0 2px #ffeb3b); }
     }
-    h2 {
-      margin-bottom: 25px;
-      color: #00bcd4;
-    }
-    input[type="text"], input[type="password"] {
+    h2 { margin-bottom: 25px; color: #00bcd4; }
+    input[type="text"], input[type="password"], input[type="number"] {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0 20px 0;
+      padding: 10px;
+      margin: 10px 0 15px 0;
       border: none;
       border-radius: 6px;
       background-color: #2a2a2a;
       color: #fff;
-      font-size: 16px;
+      font-size: 15px;
     }
     input::placeholder { color: #aaa; }
     .btn {
@@ -68,6 +65,7 @@
     .btn-expiradas { background-color: #f44336; }
     .btn-voltar { background-color: #00bcd4; }
     .btn-fazer-todas { background-color: #ffb300; margin-top: 20px; }
+    .btn-rascunho { background-color: #9c27b0; }
     .btn:hover { opacity: 0.9; transform: scale(1.02); }
     .loader {
       border: 4px solid #2a2a2a;
@@ -109,11 +107,13 @@
       text-align: left;
       font-size: 15px;
     }
-    .tempo {
-      color: #ccc;
-      font-size: 13px;
+    .tempo { color: #ccc; font-size: 13px; }
+    .mensagem {
+      margin-top: 15px;
+      color: #00bcd4;
+      font-size: 14px;
+      display: none;
     }
-    /* Diferentes interfaces */
     .pendentes-bg { background: linear-gradient(145deg, #1e1e1e, #0f3d1c); }
     .expiradas-bg { background: linear-gradient(145deg, #1e1e1e, #3d0f0f); }
   </style>
@@ -132,7 +132,7 @@
     <div id="atividades" style="display:none;"></div>
     <div class="footer">
       <span>Desenvolvido por <strong>kel_mod</strong></span>
-      <a href="https://github.com/kelmod" target="_blank" title="Ver no GitHub">
+      <a href="https://github.com/kelmod" target="_blank">
         <svg class="github-icon" viewBox="0 0 24 24">
           <path d="M12 .5C5.73.5.5 5.73.5 12.02c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56v-2.04c-3.2.7-3.88-1.54-3.88-1.54-.53-1.36-1.29-1.72-1.29-1.72-1.06-.72.08-.7.08-.7 1.17.08 1.78 1.21 1.78 1.21 1.04 1.77 2.72 1.26 3.38.97.1-.76.4-1.26.73-1.55-2.55-.3-5.23-1.28-5.23-5.7 0-1.26.45-2.3 1.19-3.11-.12-.3-.52-1.52.11-3.17 0 0 .97-.31 3.19 1.18a11.16 11.16 0 0 1 5.81 0c2.22-1.49 3.19-1.18 3.19-1.18.63 1.65.23 2.87.11 3.17.74.81 1.19 1.85 1.19 3.11 0 4.43-2.69 5.4-5.25 5.69.41.35.77 1.03.77 2.08v3.09c0 .31.21.67.8.56A10.98 10.98 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/>
         </svg>
@@ -147,6 +147,10 @@
     const loginDiv = document.getElementById("login");
     const atividadesDiv = document.getElementById("atividades");
 
+    function criarCampoMinutos(id) {
+      return `<input type="number" id="${id}" min="1" max="120" value="15" placeholder="Minutos">`;
+    }
+
     function mostrarAtividades(tipo) {
       loader.style.display = "block";
       loginDiv.style.display = "none";
@@ -155,30 +159,40 @@
       setTimeout(() => {
         loader.style.display = "none";
         document.body.className = tipo === "pendentes" ? "pendentes-bg" : "expiradas-bg";
-        
+
         if (tipo === "pendentes") {
           atividadesDiv.innerHTML = `
             <h2 style="color:#4caf50;">Atividades Pendentes</h2>
-            <div class="atividade">🧮 Exercício de Matemática<div class="tempo">Tempo estimado: 20 minutos</div></div>
-            <div class="atividade">📘 Redação de Português<div class="tempo">Tempo estimado: 15 minutos</div></div>
-            <div class="atividade">🔬 Relatório de Ciências<div class="tempo">Tempo estimado: 10 minutos</div></div>
+            <div class="atividade">🧮 Exercício de Matemática ${criarCampoMinutos("min1")}</div>
+            <div class="atividade">📘 Redação de Português ${criarCampoMinutos("min2")}</div>
+            <div class="atividade">🔬 Relatório de Ciências ${criarCampoMinutos("min3")}</div>
           `;
         } else {
           atividadesDiv.innerHTML = `
             <h2 style="color:#f44336;">Atividades Expiradas</h2>
-            <div class="atividade">📚 Trabalho de História<div class="tempo">Expirou há 2 dias</div></div>
-            <div class="atividade">🧭 Prova de Geografia<div class="tempo">Expirou há 5 dias</div></div>
+            <div class="atividade">📚 Trabalho de História ${criarCampoMinutos("min4")}</div>
+            <div class="atividade">🧭 Prova de Geografia ${criarCampoMinutos("min5")}</div>
           `;
         }
 
         atividadesDiv.innerHTML += `
           <button class="btn btn-fazer-todas" id="btnFazerTodas">Fazer todas automaticamente</button>
+          <button class="btn btn-rascunho" id="btnRascunho">💾 Deixar em Rascunho</button>
           <button class="btn btn-voltar" id="btnVoltar">Voltar</button>
+          <div class="mensagem" id="mensagem">📝 Atividade salva como rascunho!</div>
         `;
         atividadesDiv.style.display = "block";
 
+        document.getElementById("btnRascunho").addEventListener("click", () => {
+          const msg = document.getElementById("mensagem");
+          msg.style.display = "block";
+          msg.textContent = "📝 Atividade salva como rascunho!";
+          setTimeout(() => msg.style.display = "none", 3000);
+        });
+
         document.getElementById("btnFazerTodas").addEventListener("click", () => {
-          atividadesDiv.innerHTML = `<h2>⚙️ Executando todas as atividades...</h2><div class="loader" style="display:block;"></div>`;
+          const tempos = [...document.querySelectorAll("input[type='number']")].map(el => el.value);
+          atividadesDiv.innerHTML = `<h2>⚙️ Executando todas as atividades...</h2><p>Usando tempos: ${tempos.join(" min, ")} min</p><div class="loader" style="display:block;"></div>`;
           setTimeout(() => {
             atividadesDiv.innerHTML = `<h2>✅ Todas as atividades foram concluídas!</h2>
                                        <button class="btn btn-voltar" id="btnVoltar">Voltar</button>`;

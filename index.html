@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fandangos | Portal do Aluno</title>
+  <title>Fandangos | Automação</title>
   <style>
     body {
       background-color: #121212;
@@ -32,6 +32,11 @@
       color: #ffc107;
       margin-bottom: 10px;
       letter-spacing: 1px;
+      animation: blink 1.5s infinite alternate;
+    }
+    @keyframes blink {
+      0% { color: #ffc107; opacity: 1; filter: drop-shadow(0 0 8px #ffc107); }
+      100% { color: #ffeb3b; opacity: 0.4; filter: drop-shadow(0 0 2px #ffeb3b); }
     }
     h2 {
       margin-bottom: 25px;
@@ -50,19 +55,28 @@
     input::placeholder {
       color: #aaa;
     }
-    button {
+    .btn {
       width: 100%;
       padding: 12px;
-      background-color: #00bcd4;
       border: none;
       border-radius: 6px;
       color: white;
       font-size: 16px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      margin-bottom: 10px;
     }
-    button:hover {
-      background-color: #0097a7;
+    .btn-pendentes {
+      background-color: #4caf50;
+    }
+    .btn-pendentes:hover {
+      background-color: #43a047;
+    }
+    .btn-expiradas {
+      background-color: #f44336;
+    }
+    .btn-expiradas:hover {
+      background-color: #d32f2f;
     }
     .loader {
       border: 4px solid #2a2a2a;
@@ -89,37 +103,6 @@
     .error {
       color: #f44336;
     }
-    .welcome-screen {
-      display: none;
-      text-align: center;
-      animation: fadeIn 1s ease forwards;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .welcome-screen h1 {
-      color: #00bcd4;
-      font-size: 28px;
-    }
-    .welcome-screen p {
-      color: #ccc;
-      margin-top: 10px;
-    }
-    .logout-btn {
-      margin-top: 25px;
-      background-color: #f44336;
-      border: none;
-      border-radius: 6px;
-      padding: 10px 20px;
-      color: white;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .logout-btn:hover {
-      background-color: #d32f2f;
-    }
     .footer {
       margin-top: 20px;
       font-size: 13px;
@@ -127,9 +110,9 @@
       justify-content: center;
       align-items: center;
       gap: 8px;
-      animation: blink 1.5s infinite alternate;
+      animation: blink-footer 1.5s infinite alternate;
     }
-    @keyframes blink {
+    @keyframes blink-footer {
       0% { color: #ffc107; opacity: 1; filter: drop-shadow(0 0 6px #ffc107); }
       100% { color: #ffea00; opacity: 0.5; filter: drop-shadow(0 0 2px #ffea00); }
     }
@@ -153,12 +136,13 @@
 <body>
   <div class="login-container" id="loginContainer">
     <div class="site-title">🌽 Fandangos</div>
-    <h2>Portal do Aluno</h2>
+    <h2>Feito para automatizar tarefas</h2>
     <div class="loader" id="loader"></div>
     <form id="loginForm">
       <input type="text" id="ra" placeholder="Digite seu RA" required>
       <input type="password" id="senha" placeholder="Digite sua senha" required>
-      <button type="submit">Entrar</button>
+      <button type="button" class="btn btn-pendentes" id="btnPendentes">Atividades Pendentes</button>
+      <button type="button" class="btn btn-expiradas" id="btnExpiradas">Atividades Expiradas</button>
     </form>
     <div class="message" id="message"></div>
     <div class="footer">
@@ -170,52 +154,19 @@
       </a>
     </div>
   </div>
-  <div class="welcome-screen" id="welcomeScreen">
-    <h1>🎓 Bem-vindo ao Fandangos!</h1>
-    <p>Seu acesso foi autorizado com sucesso.</p>
-    <button class="logout-btn" id="logoutBtn">Sair</button>
-  </div>
   <script>
-    const form = document.getElementById("loginForm");
-    const loader = document.getElementById("loader");
+    const btnPendentes = document.getElementById("btnPendentes");
+    const btnExpiradas = document.getElementById("btnExpiradas");
     const message = document.getElementById("message");
-    const loginContainer = document.getElementById("loginContainer");
-    const welcomeScreen = document.getElementById("welcomeScreen");
-    const logoutBtn = document.getElementById("logoutBtn");
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      message.style.display = "none";
-      loader.style.display = "block";
-      setTimeout(() => {
-        loader.style.display = "none";
-        const ra = document.getElementById("ra").value;
-        const senha = document.getElementById("senha").value;
-        if (ra === "123456" && senha === "senha123") {
-          message.textContent = "✅ Login realizado com sucesso!";
-          message.className = "message success";
-          message.style.display = "block";
-          setTimeout(() => {
-            loginContainer.style.opacity = "0";
-            loginContainer.style.transform = "scale(0.95)";
-            setTimeout(() => {
-              loginContainer.style.display = "none";
-              welcomeScreen.style.display = "block";
-            }, 500);
-          }, 1000);
-        } else {
-          message.textContent = "❌ RA ou senha incorretos.";
-          message.className = "message error";
-          message.style.display = "block";
-        }
-      }, 2000);
+    btnPendentes.addEventListener("click", () => {
+      message.textContent = "📚 Você não possui atividades pendentes no momento.";
+      message.className = "message success";
+      message.style.display = "block";
     });
-    logoutBtn.addEventListener("click", () => {
-      welcomeScreen.style.display = "none";
-      loginContainer.style.display = "block";
-      loginContainer.style.opacity = "1";
-      loginContainer.style.transform = "scale(1)";
-      form.reset();
-      message.style.display = "none";
+    btnExpiradas.addEventListener("click", () => {
+      message.textContent = "⚠️ Você possui 2 atividades expiradas.";
+      message.className = "message error";
+      message.style.display = "block";
     });
   </script>
 </body>

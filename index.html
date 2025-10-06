@@ -1,115 +1,119 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fandangos | Sala do Futuro</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fandangos | Automação</title>
   <style>
-    body {
-      background-color: #121212;
-      color: #f0f0f0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      overflow: hidden;
-      transition: background 0.4s ease;
+    :root{
+      --bg:#121212;
+      --card:#1e1e1e;
+      --input:#2a2a2a;
+      --accent:#ffc107;
+      --accent-2:#00bcd4;
+      --text:#f0f0f0;
     }
-    .container {
-      background-color: #1e1e1e;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-      width: 400px;
-      text-align: center;
-      transition: all 0.5s ease;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      height:100vh;
+      background:var(--bg);
+      color:var(--text);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
     }
-    .site-title {
-      font-size: 28px;
-      font-weight: bold;
-      color: #ffc107;
-      margin-bottom: 10px;
-      animation: blink 1.5s infinite alternate;
-      letter-spacing: 1px;
+    .container{
+      width:400px;
+      background:var(--card);
+      padding:36px;
+      border-radius:12px;
+      box-shadow:0 8px 30px rgba(0,0,0,0.6);
+      text-align:center;
     }
-    @keyframes blink {
-      0% { color: #ffc107; opacity: 1; filter: drop-shadow(0 0 8px #ffc107); }
-      100% { color: #ffeb3b; opacity: 0.5; filter: drop-shadow(0 0 2px #ffeb3b); }
+    .site-title{
+      font-size:28px;
+      font-weight:700;
+      color:var(--accent);
+      margin:0 0 8px 0;
+      letter-spacing:1px;
+      animation:blink 1.5s infinite alternate;
     }
-    h2 { color: #00bcd4; margin-bottom: 25px; }
-    input[type="text"], input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0 15px 0;
-      border: none;
-      border-radius: 6px;
-      background-color: #2a2a2a;
-      color: #fff;
-      font-size: 15px;
+    @keyframes blink{
+      0%{ color:var(--accent); opacity:1; filter:drop-shadow(0 0 8px var(--accent)); }
+      100%{ color:#ffeb3b; opacity:0.45; filter:drop-shadow(0 0 2px #ffeb3b); }
     }
-    input::placeholder { color: #aaa; }
-    .btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 6px;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-      margin-bottom: 10px;
+    h2{ margin:0 0 18px 0; color:var(--accent-2); font-weight:600; font-size:16px; }
+    .field{ width:100%; margin-bottom:12px; }
+    input[type="text"],
+    input[type="password"]{
+      width:100%;
+      padding:10px;
+      border-radius:8px;
+      border:0;
+      background:var(--input);
+      color:var(--text);
+      font-size:15px;
     }
-    .btn-pendentes { background-color: #4caf50; }
-    .btn-expiradas { background-color: #f44336; }
-    .btn-rascunho { background-color: #9c27b0; }
-    .btn:hover { opacity: 0.9; transform: scale(1.02); }
-    .loader {
-      border: 4px solid #2a2a2a;
-      border-top: 4px solid #00bcd4;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-      display: none;
+    input::placeholder{ color:#aaa; }
+    .checkbox-container{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      margin:12px 0 18px 0;
     }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    iframe {
-      width: 100%;
-      height: 80vh;
-      border: none;
-      border-radius: 10px;
-      margin-top: 20px;
-      display: none;
+    .checkbox-container input{
+      width:20px;
+      height:20px;
+      accent-color:var(--accent);
+      cursor:pointer;
     }
-    .footer {
-      margin-top: 20px;
-      font-size: 13px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      animation: blink-footer 1.5s infinite alternate;
+    .checkbox-container label{
+      color:var(--accent);
+      cursor:pointer;
+      user-select:none;
     }
-    @keyframes blink-footer {
-      0% { color: #ffc107; opacity: 1; filter: drop-shadow(0 0 6px #ffc107); }
-      100% { color: #ffea00; opacity: 0.5; filter: drop-shadow(0 0 2px #ffea00); }
+    .btn{
+      width:100%;
+      padding:12px;
+      border-radius:8px;
+      border:0;
+      color:#fff;
+      font-size:15px;
+      cursor:pointer;
+      margin-bottom:10px;
+      transition:transform .12s ease, opacity .12s ease;
     }
-    .footer a {
-      color: inherit;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .btn:active{ transform:scale(.997); }
+    .btn-pendentes{ background:#4caf50; }
+    .btn-expiradas{ background:#f44336; }
+    .btn-rascunho{ background:#9c27b0; }
+    .mensagem{
+      margin-top:14px;
+      color:var(--accent-2);
+      font-size:14px;
+      display:none;
     }
-    .github-icon { width: 18px; height: 18px; fill: currentColor; }
-    .mensagem {
-      margin-top: 15px;
-      color: #00bcd4;
-      font-size: 14px;
-      display: none;
+    .footer{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      color:var(--accent);
+      font-size:13px;
+      animation:blink-footer 1.6s infinite alternate;
+    }
+    @keyframes blink-footer{
+      0%{ color:var(--accent); opacity:1; filter:drop-shadow(0 0 6px var(--accent)); }
+      100%{ color:#ffea00; opacity:0.5; filter:drop-shadow(0 0 2px #ffea00); }
+    }
+    .github-icon{ width:18px; height:18px; fill:currentColor; vertical-align:middle; }
+    @media (max-width:420px){
+      .container{ width:92%; padding:24px; }
     }
   </style>
 </head>
@@ -118,22 +122,29 @@
     <div class="site-title">🌽 Fandangos</div>
     <h2>Feito para automatizar tarefas</h2>
 
-    <div id="login">
-      <input type="text" id="ra" placeholder="Digite seu RA">
-      <input type="password" id="senha" placeholder="Digite sua senha">
-      <button class="btn btn-pendentes" id="btnPendentes">Atividades Pendentes</button>
-      <button class="btn btn-expiradas" id="btnExpiradas">Atividades Expiradas</button>
-      <button class="btn btn-rascunho" id="btnRascunho">💾 Deixar em Rascunho</button>
-      <div class="mensagem" id="mensagem">📝 Rascunho salvo com sucesso!</div>
+    <div class="field">
+      <input id="ra" type="text" placeholder="Digite seu RA" />
     </div>
 
-    <div class="loader" id="loader"></div>
-    <iframe id="salaFuturo" src=""></iframe>
+    <div class="field">
+      <input id="senha" type="password" placeholder="Digite sua senha" />
+    </div>
+
+    <div class="checkbox-container">
+      <input id="humano" type="checkbox" />
+      <label for="humano">Sou humano</label>
+    </div>
+
+    <button class="btn btn-pendentes" id="btnPendentes">Atividades Pendentes</button>
+    <button class="btn btn-expiradas" id="btnExpiradas">Atividades Expiradas</button>
+    <button class="btn btn-rascunho" id="btnRascunho">Deixar em Rascunho</button>
+
+    <div class="mensagem" id="mensagem">📝 Rascunho salvo com sucesso!</div>
 
     <div class="footer">
       <span>Desenvolvido por <strong>kel_mod</strong></span>
-      <a href="https://github.com/kelmod" target="_blank">
-        <svg class="github-icon" viewBox="0 0 24 24">
+      <a href="https://github.com/kelmod" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg class="github-icon" viewBox="0 0 24 24" role="img" aria-hidden="true">
           <path d="M12 .5C5.73.5.5 5.73.5 12.02c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56v-2.04c-3.2.7-3.88-1.54-3.88-1.54-.53-1.36-1.29-1.72-1.29-1.72-1.06-.72.08-.7.08-.7 1.17.08 1.78 1.21 1.78 1.21 1.04 1.77 2.72 1.26 3.38.97.1-.76.4-1.26.73-1.55-2.55-.3-5.23-1.28-5.23-5.7 0-1.26.45-2.3 1.19-3.11-.12-.3-.52-1.52.11-3.17 0 0 .97-.31 3.19 1.18a11.16 11.16 0 0 1 5.81 0c2.22-1.49 3.19-1.18 3.19-1.18.63 1.65.23 2.87.11 3.17.74.81 1.19 1.85 1.19 3.11 0 4.43-2.69 5.4-5.25 5.69.41.35.77 1.03.77 2.08v3.09c0 .31.21.67.8.56A10.98 10.98 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/>
         </svg>
       </a>
@@ -141,33 +152,35 @@
   </div>
 
   <script>
-    const btnPendentes = document.getElementById("btnPendentes");
-    const btnExpiradas = document.getElementById("btnExpiradas");
-    const btnRascunho = document.getElementById("btnRascunho");
-    const loader = document.getElementById("loader");
-    const loginDiv = document.getElementById("login");
-    const iframe = document.getElementById("salaFuturo");
-    const mensagem = document.getElementById("mensagem");
+    const btnPendentes = document.getElementById('btnPendentes');
+    const btnExpiradas = document.getElementById('btnExpiradas');
+    const btnRascunho = document.getElementById('btnRascunho');
+    const humano = document.getElementById('humano');
+    const mensagem = document.getElementById('mensagem');
 
-    function abrirSala() {
-      loader.style.display = "block";
-      loginDiv.style.display = "none";
-      iframe.style.display = "none";
-
-      setTimeout(() => {
-        loader.style.display = "none";
-        iframe.src = "https://saladofuturo.educacao.sp.gov.br/tarefas";
-        iframe.style.display = "block";
-        iframe.scrollIntoView({ behavior: "smooth" });
-      }, 2000);
+    function requireHuman(){
+      if(!humano.checked){
+        alert('❌ Por favor, confirme que você é humano antes de continuar!');
+        return false;
+      }
+      return true;
     }
 
-    btnPendentes.addEventListener("click", abrirSala);
-    btnExpiradas.addEventListener("click", abrirSala);
-    btnRascunho.addEventListener("click", () => {
-      mensagem.style.display = "block";
-      setTimeout(() => mensagem.style.display = "none", 3000);
+    btnPendentes.addEventListener('click', () => {
+      if(!requireHuman()) return;
+      alert('🔓 Atividades Pendentes — ação iniciada.');
+    });
+
+    btnExpiradas.addEventListener('click', () => {
+      if(!requireHuman()) return;
+      alert('🔓 Atividades Expiradas — ação iniciada.');
+    });
+
+    btnRascunho.addEventListener('click', () => {
+      if(!requireHuman()) return;
+      mensagem.style.display = 'block';
+      setTimeout(()=> mensagem.style.display = 'none', 3000);
     });
   </script>
 </body>
-</html>
+  </html>

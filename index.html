@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fandangos | Automação</title>
+  <title>Fandangos | Sala do Futuro</title>
   <style>
     body {
       background-color: #121212;
@@ -22,9 +22,9 @@
       padding: 40px;
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-      width: 380px;
+      width: 400px;
       text-align: center;
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition: all 0.5s ease;
     }
     .site-title {
       font-size: 28px;
@@ -36,10 +36,10 @@
     }
     @keyframes blink {
       0% { color: #ffc107; opacity: 1; filter: drop-shadow(0 0 8px #ffc107); }
-      100% { color: #ffeb3b; opacity: 0.4; filter: drop-shadow(0 0 2px #ffeb3b); }
+      100% { color: #ffeb3b; opacity: 0.5; filter: drop-shadow(0 0 2px #ffeb3b); }
     }
-    h2 { margin-bottom: 25px; color: #00bcd4; }
-    input[type="text"], input[type="password"], input[type="number"] {
+    h2 { color: #00bcd4; margin-bottom: 25px; }
+    input[type="text"], input[type="password"] {
       width: 100%;
       padding: 10px;
       margin: 10px 0 15px 0;
@@ -63,8 +63,6 @@
     }
     .btn-pendentes { background-color: #4caf50; }
     .btn-expiradas { background-color: #f44336; }
-    .btn-voltar { background-color: #00bcd4; }
-    .btn-fazer-todas { background-color: #ffb300; margin-top: 20px; }
     .btn-rascunho { background-color: #9c27b0; }
     .btn:hover { opacity: 0.9; transform: scale(1.02); }
     .loader {
@@ -74,10 +72,18 @@
       width: 40px;
       height: 40px;
       animation: spin 1s linear infinite;
-      margin: 0 auto 20px;
+      margin: 20px auto;
       display: none;
     }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    iframe {
+      width: 100%;
+      height: 80vh;
+      border: none;
+      border-radius: 10px;
+      margin-top: 20px;
+      display: none;
+    }
     .footer {
       margin-top: 20px;
       font-size: 13px;
@@ -99,37 +105,31 @@
       gap: 6px;
     }
     .github-icon { width: 18px; height: 18px; fill: currentColor; }
-    .atividade {
-      background-color: #2a2a2a;
-      padding: 12px;
-      border-radius: 6px;
-      margin-top: 10px;
-      text-align: left;
-      font-size: 15px;
-    }
-    .tempo { color: #ccc; font-size: 13px; }
     .mensagem {
       margin-top: 15px;
       color: #00bcd4;
       font-size: 14px;
       display: none;
     }
-    .pendentes-bg { background: linear-gradient(145deg, #1e1e1e, #0f3d1c); }
-    .expiradas-bg { background: linear-gradient(145deg, #1e1e1e, #3d0f0f); }
   </style>
 </head>
 <body>
   <div class="container" id="main">
     <div class="site-title">🌽 Fandangos</div>
     <h2>Feito para automatizar tarefas</h2>
-    <div class="loader" id="loader"></div>
+
     <div id="login">
-      <input type="text" id="ra" placeholder="Digite seu RA" required>
-      <input type="password" id="senha" placeholder="Digite sua senha" required>
-      <button type="button" class="btn btn-pendentes" id="btnPendentes">Atividades Pendentes</button>
-      <button type="button" class="btn btn-expiradas" id="btnExpiradas">Atividades Expiradas</button>
+      <input type="text" id="ra" placeholder="Digite seu RA">
+      <input type="password" id="senha" placeholder="Digite sua senha">
+      <button class="btn btn-pendentes" id="btnPendentes">Atividades Pendentes</button>
+      <button class="btn btn-expiradas" id="btnExpiradas">Atividades Expiradas</button>
+      <button class="btn btn-rascunho" id="btnRascunho">💾 Deixar em Rascunho</button>
+      <div class="mensagem" id="mensagem">📝 Rascunho salvo com sucesso!</div>
     </div>
-    <div id="atividades" style="display:none;"></div>
+
+    <div class="loader" id="loader"></div>
+    <iframe id="salaFuturo" src=""></iframe>
+
     <div class="footer">
       <span>Desenvolvido por <strong>kel_mod</strong></span>
       <a href="https://github.com/kelmod" target="_blank">
@@ -143,75 +143,31 @@
   <script>
     const btnPendentes = document.getElementById("btnPendentes");
     const btnExpiradas = document.getElementById("btnExpiradas");
+    const btnRascunho = document.getElementById("btnRascunho");
     const loader = document.getElementById("loader");
     const loginDiv = document.getElementById("login");
-    const atividadesDiv = document.getElementById("atividades");
+    const iframe = document.getElementById("salaFuturo");
+    const mensagem = document.getElementById("mensagem");
 
-    function criarCampoMinutos(id) {
-      return `<input type="number" id="${id}" min="1" max="120" value="15" placeholder="Minutos">`;
-    }
-
-    function mostrarAtividades(tipo) {
+    function abrirSala() {
       loader.style.display = "block";
       loginDiv.style.display = "none";
-      atividadesDiv.style.display = "none";
+      iframe.style.display = "none";
 
       setTimeout(() => {
         loader.style.display = "none";
-        document.body.className = tipo === "pendentes" ? "pendentes-bg" : "expiradas-bg";
-
-        if (tipo === "pendentes") {
-          atividadesDiv.innerHTML = `
-            <h2 style="color:#4caf50;">Atividades Pendentes</h2>
-            <div class="atividade">🧮 Exercício de Matemática ${criarCampoMinutos("min1")}</div>
-            <div class="atividade">📘 Redação de Português ${criarCampoMinutos("min2")}</div>
-            <div class="atividade">🔬 Relatório de Ciências ${criarCampoMinutos("min3")}</div>
-          `;
-        } else {
-          atividadesDiv.innerHTML = `
-            <h2 style="color:#f44336;">Atividades Expiradas</h2>
-            <div class="atividade">📚 Trabalho de História ${criarCampoMinutos("min4")}</div>
-            <div class="atividade">🧭 Prova de Geografia ${criarCampoMinutos("min5")}</div>
-          `;
-        }
-
-        atividadesDiv.innerHTML += `
-          <button class="btn btn-fazer-todas" id="btnFazerTodas">Fazer todas automaticamente</button>
-          <button class="btn btn-rascunho" id="btnRascunho">💾 Deixar em Rascunho</button>
-          <button class="btn btn-voltar" id="btnVoltar">Voltar</button>
-          <div class="mensagem" id="mensagem">📝 Atividade salva como rascunho!</div>
-        `;
-        atividadesDiv.style.display = "block";
-
-        document.getElementById("btnRascunho").addEventListener("click", () => {
-          const msg = document.getElementById("mensagem");
-          msg.style.display = "block";
-          msg.textContent = "📝 Atividade salva como rascunho!";
-          setTimeout(() => msg.style.display = "none", 3000);
-        });
-
-        document.getElementById("btnFazerTodas").addEventListener("click", () => {
-          const tempos = [...document.querySelectorAll("input[type='number']")].map(el => el.value);
-          atividadesDiv.innerHTML = `<h2>⚙️ Executando todas as atividades...</h2><p>Usando tempos: ${tempos.join(" min, ")} min</p><div class="loader" style="display:block;"></div>`;
-          setTimeout(() => {
-            atividadesDiv.innerHTML = `<h2>✅ Todas as atividades foram concluídas!</h2>
-                                       <button class="btn btn-voltar" id="btnVoltar">Voltar</button>`;
-            document.getElementById("btnVoltar").addEventListener("click", voltar);
-          }, 3000);
-        });
-
-        document.getElementById("btnVoltar").addEventListener("click", voltar);
+        iframe.src = "https://saladofuturo.educacao.sp.gov.br/tarefas";
+        iframe.style.display = "block";
+        iframe.scrollIntoView({ behavior: "smooth" });
       }, 2000);
     }
 
-    function voltar() {
-      atividadesDiv.style.display = "none";
-      loginDiv.style.display = "block";
-      document.body.className = "";
-    }
-
-    btnPendentes.addEventListener("click", () => mostrarAtividades("pendentes"));
-    btnExpiradas.addEventListener("click", () => mostrarAtividades("expiradas"));
+    btnPendentes.addEventListener("click", abrirSala);
+    btnExpiradas.addEventListener("click", abrirSala);
+    btnRascunho.addEventListener("click", () => {
+      mensagem.style.display = "block";
+      setTimeout(() => mensagem.style.display = "none", 3000);
+    });
   </script>
 </body>
-  </html>
+</html>

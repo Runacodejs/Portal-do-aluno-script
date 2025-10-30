@@ -16,7 +16,7 @@
             height: 100vh;
             flex-direction: column;
         }
-        .login-container, .dashboard {
+        .container {
             background: rgba(255,255,255,0.9);
             padding: 30px;
             border-radius: 15px;
@@ -51,12 +51,10 @@
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
+            margin-top: 10px;
         }
         button:hover {
             background: #ff8000;
-        }
-        .hidden {
-            display: none;
         }
         .activities {
             margin-top: 20px;
@@ -78,20 +76,12 @@
     </style>
 </head>
 <body>
-    <!-- Tela de Login -->
-    <div class="login-container" id="loginPage">
+    <div class="container">
         <h1>🍿 Fandangos</h1>
-        <h2>Faça login</h2>
+        <h2>Login</h2>
         <input type="text" id="ra" placeholder="Digite seu RA">
         <input type="password" id="senha" placeholder="Digite sua Senha">
-        <button onclick="login()">Entrar</button>
-        <footer>Desenvolvido por <strong>kel_mod</strong> | Servidor: <strong>runacode</strong></footer>
-    </div>
 
-    <!-- Tela Principal -->
-    <div class="dashboard hidden" id="dashboard">
-        <h1>🍿 Fandangos</h1>
-        <h2>Bem-vindo!</h2>
         <button onclick="mostrarPendentes()">Atividades Pendentes</button>
         <button onclick="mostrarExpiradas()">Atividades Expiradas</button>
 
@@ -103,19 +93,18 @@
     <script>
         const usuario = { ra: "123456", senha: "1234" };
 
-        function login() {
+        function validarLogin() {
             const ra = document.getElementById("ra").value;
             const senha = document.getElementById("senha").value;
-            
-            if (ra === usuario.ra && senha === usuario.senha) {
-                document.getElementById("loginPage").classList.add("hidden");
-                document.getElementById("dashboard").classList.remove("hidden");
-            } else {
-                alert("RA ou senha incorretos!");
-            }
+            return ra === usuario.ra && senha === usuario.senha;
         }
 
         function mostrarPendentes() {
+            if (!validarLogin()) {
+                alert("RA ou senha incorretos!");
+                return;
+            }
+
             const atividades = [
                 "Trabalho de Matemática - até 10/11",
                 "Redação de Português - até 08/11",
@@ -125,6 +114,11 @@
         }
 
         function mostrarExpiradas() {
+            if (!validarLogin()) {
+                alert("RA ou senha incorretos!");
+                return;
+            }
+
             const atividades = [
                 "Prova de História - expirou em 25/10",
                 "Apresentação de Geografia - expirou em 28/10"

@@ -1,116 +1,147 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <title>Sala do Futuro Aluno</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no,maximum-scale=1"/>
-    <meta name="description" content="Conheça o Sala do Futuro: o novo app completo para organizar o dia a dia de alunos, professores e responsáveis da rede estadual de escolas de São Paulo.">
-    <meta name="apple-itunes-app" content="app-id=6474023966">
-    <link rel="icon" href="https://edusp-static.ip.tv/sala-do-futuro/conteudo_logo.png" type="image/png">
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto+Slab|Roboto:300,400,500,600,700&display=swap"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="httpss://cdn.jsdelivr.net/npm/quill@2.0.0-rc.2/dist/quill.snow.css" crossorigin="anonymous" />
-    <link rel="stylesheet" href="httpss://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
-    <script type="text/javascript" src="httpss://js-cdn.dynatrace.com/jstag/17cdb8fd6ce/bf10005oro/892779e3f1a828cf_complete.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="httpss://js-cdn.dynatrace.com/jstag/17cdb8fd6ce/ruxitagent_ICA7NQVfqrux_10323250822043923.js" data-dtconfig="app=892779e3f1a828cf|cors=1|owasp=1|featureHash=ICA7NQVfqrux|msl=153600|srsr=50000|reportUrl=https://bf10005oro.bf.dynatrace.com/bf|rdnt=1|uxrgce=1|cuc=d991g0ha|srms=2,1,0,0%2Ftextarea%2Cinput%2Cselect%2Coption;0%2Fdatalist;0%2Fform%20button;0%2F%5Bdata-dtrum-input%5D;0%2F.data-dtrum-input;1%2F%5Edata%28%28%5C-.%2B%24%29%7C%24%29|mel=100000|expw=1|dpvc=1|lastModification=1760382440534|postfix=d991g0ha|tp=500,50,0|srbbv=2|agentUri=httpss://js-cdn.dynatrace.com/jstag/17cdb8fd6ce/ruxitagent_ICA7NQVfqrux_10323250822043923.js" crossorigin="anonymous" async></script>
-    <script type="text/javascript">!function(t,e,n,c,s,a,r){t[n]=t[n]||function(){(t[n].q=t[n].q||[]).push(arguments)},(a=e.createElement(c)).async=1,a.src="httpss://www.clarity.ms/tag/m4obly3snv",(r=e.getElementsByTagName(c)[0]).parentNode.insertBefore(a,r)}(window,document,"clarity","script")</script>
-    <script src="httpss://www.youtube.com/iframe_api"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fandangos</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #ffcc33, #ff9933);
+            color: #222;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            flex-direction: column;
         }
-        .login-container {
-            background-color: #f0f0f0;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .login-container h2 {
+        .login-container, .dashboard {
+            background: rgba(255,255,255,0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            width: 320px;
             text-align: center;
-            margin-bottom: 20px;
         }
-        .login-container input {
-            width: 100%;
-            padding: 10px;
+        h1 {
             margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
+            color: #e67e22;
         }
-        .login-container button {
-            width: 100%;
+        h2 {
+            margin-bottom: 20px;
+            color: #555;
+        }
+        input {
+            width: 90%;
             padding: 10px;
-            background-color: #4CAF50;
-            color: white;
+            margin: 8px 0;
+            border: 2px solid #ffb84d;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+        }
+        button {
+            width: 95%;
+            padding: 10px;
+            background: #ff9933;
             border: none;
-            border-radius: 3px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: bold;
             cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #ff8000;
+        }
+        .hidden {
+            display: none;
+        }
+        .activities {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .activity {
+            background: rgba(255,204,102,0.4);
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        footer {
+            margin-top: 25px;
+            font-size: 12px;
+            color: #333;
+            opacity: 0.8;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <input type="text" id="ra" placeholder="RA" required>
-            <input type="password" id="password" placeholder="Senha" required>
-            <button type="submit">Entrar</button>
-        </form>
+    <!-- Tela de Login -->
+    <div class="login-container" id="loginPage">
+        <h1>🍿 Fandangos</h1>
+        <h2>Faça login</h2>
+        <input type="text" id="ra" placeholder="Digite seu RA">
+        <input type="password" id="senha" placeholder="Digite sua Senha">
+        <button onclick="login()">Entrar</button>
+        <footer>Desenvolvido por <strong>kel_mod</strong> | Servidor: <strong>runacode</strong></footer>
     </div>
-    <div id="root" style="display:none;"></div>
-    <div id="modal"></div>
+
+    <!-- Tela Principal -->
+    <div class="dashboard hidden" id="dashboard">
+        <h1>🍿 Fandangos</h1>
+        <h2>Bem-vindo!</h2>
+        <button onclick="mostrarPendentes()">Atividades Pendentes</button>
+        <button onclick="mostrarExpiradas()">Atividades Expiradas</button>
+
+        <div class="activities" id="activitiesList"></div>
+
+        <footer>Desenvolvido por <strong>kel_mod</strong> | Servidor: <strong>runacode</strong></footer>
+    </div>
+
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const ra = document.getElementById('ra').value;
-            const password = document.getElementById('password').value;
+        const usuario = { ra: "123456", senha: "1234" };
 
-            // TODO: Replace with the actual API endpoint
-            const apiUrl = 'https://cmsp.ip.tv/mobile/tms'; 
+        function login() {
+            const ra = document.getElementById("ra").value;
+            const senha = document.getElementById("senha").value;
+            
+            if (ra === usuario.ra && senha === usuario.senha) {
+                document.getElementById("loginPage").classList.add("hidden");
+                document.getElementById("dashboard").classList.remove("hidden");
+            } else {
+                alert("RA ou senha incorretos!");
+            }
+        }
 
-            const headers = {
-                'X-Api-Key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQwMmU4MzFlOTIyMjZkNWJkZmEzYjYwIiwiZXh0ZXJuYWxfaWQiOiIyODk3MDM3NjYiLCJza2V5IjoiYXV0aF90b2tlbjplZHVzcDprZWx2aXNyb2RyaTExNDk5MTU5NC1zcCIsIm5pY2siOiJrZWx2aXNyb2RyaTExNDk5MTU5NC1zcCIsInJlYWxtIjoiZWR1c3AiLCJyb2xlIjoiMDAwNiIsImlhdCI6MTc2MTY3MDcyNywiZXhwIjoxNzYxNzU3MTI3LCJhdWQiOiJ3ZWJjbGllbnQifQ.62fLP-Pxx-XRfdlmfFUUPqKI9sfDkJ3ic9y7B3Jt_Zg',
-                'Content-Type': 'application/json',
-                'X-Api-Realm': 'edusp',
-                'X-Api-Platform': 'webclient',
-                'X-Client-Domain': 'taskitos.cupiditys.lol',
-                'X-Client-Timestamp': Date.now().toString(),
-                // This signature is likely dynamic and needs to be generated.
-                // This is just a placeholder from the captured request.
-                'X-Client-Signature': 'Njg3NTMyODM4', 
-            };
+        function mostrarPendentes() {
+            const atividades = [
+                "Trabalho de Matemática - até 10/11",
+                "Redação de Português - até 08/11",
+                "Projeto de Ciências - até 12/11"
+            ];
+            atualizarLista(atividades, "Atividades Pendentes");
+        }
 
-            const body = JSON.stringify({
-                ra: ra,
-                password: password,
+        function mostrarExpiradas() {
+            const atividades = [
+                "Prova de História - expirou em 25/10",
+                "Apresentação de Geografia - expirou em 28/10"
+            ];
+            atualizarLista(atividades, "Atividades Expiradas");
+        }
+
+        function atualizarLista(lista, titulo) {
+            const div = document.getElementById("activitiesList");
+            div.innerHTML = `<h3>${titulo}</h3>`;
+            lista.forEach(a => {
+                const item = document.createElement("div");
+                item.className = "activity";
+                item.textContent = a;
+                div.appendChild(item);
             });
-
-            fetch(apiUrl, {
-                method: 'POST',
-                headers: headers,
-                body: body,
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                // Handle successful login here, e.g., redirect to another page
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                // Handle login error here
-            });
-        });
+        }
     </script>
-    <script defer="defer" src="/js/runtime-app.6c9dc4ef.js"></script>
-    <script defer="defer" src="/js/1352.5f475e00.js"></script>
-    <script defer="defer" src="/js/app.11d9fb28.js"></script>
-    <link href="/css/1352.b65870be.css" rel="stylesheet">
 </body>
 </html>

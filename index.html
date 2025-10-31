@@ -99,42 +99,56 @@
             return ra === usuario.ra && senha === usuario.senha;
         }
 
-        function mostrarPendentes() {
-            if (!validarLogin()) {
-                alert("RA ou senha incorretos!");
-                return;
+        async function carregarAtividades() {
+            try {
+                // Chama a nossa própria API, que está na Vercel
+                const response = await fetch('/api/atividades');
+                return await response.json();
+            } catch (error) {
+                console.error('Erro ao carregar atividades da nossa API:', error);
+                console.log('Carregando dados do arquivo local (atividades.json) como fallback.');
+                // Fallback para o arquivo local
+                try {
+                    const response = await fetch('atividades.json');
+                    return await response.json();
+                } catch (fileError) {
+                    console.error('Erro ao carregar o arquivo local:', fileError);
+                    return { pendentes: [], expiradas: [] };
+                }
             }
-
-            const atividades = [
-                "Trabalho de Matemática - até 10/11",
-                "Redação de Português - até 08/11",
-                "Projeto de Ciências - até 12/11"
-            ];
-            atualizarLista(atividades, "Atividades Pendentes");
         }
 
-        function mostrarExpiradas() {
+        async function mostrarPendentes() {
             if (!validarLogin()) {
                 alert("RA ou senha incorretos!");
                 return;
             }
 
-            const atividades = [
-                "Prova de História - expirou em 25/10",
-                "Apresentação de Geografia - expirou em 28/10"
-            ];
-            atualizarLista(atividades, "Atividades Expiradas");
+            const atividades = await carregarAtividades();
+            atualizarLista(atividades.pendentes, "Atividades Pendentes");
+        }
+
+        async function mostrarExpiradas() {
+            if (!validarLogin()) {
+                alert("RA ou senha incorretos!");
+                return;
+            }
+
+            const atividades = await carregarAtividades();
+            atualizarLista(atividades.expiradas, "Atividades Expiradas");
         }
 
         function atualizarLista(lista, titulo) {
             const div = document.getElementById("activitiesList");
             div.innerHTML = `<h3>${titulo}</h3>`;
-            lista.forEach(a => {
-                const item = document.createElement("div");
-                item.className = "activity";
-                item.textContent = a;
-                div.appendChild(item);
-            });
+            if (lista) {
+                lista.forEach(a => {
+                    const item = document.createElement("div");
+                    item.className = "activity";
+                    item.textContent = a;
+                    div.appendChild(item);
+                });
+            }
         }
     </script>
 </body>

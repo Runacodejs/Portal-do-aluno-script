@@ -73,19 +73,27 @@
             opacity: 0.8;
             text-align: center;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🍿 Fandangos</h1>
-        <h2>Login</h2>
-        <input type="text" id="ra" placeholder="Digite seu RA">
-        <input type="password" id="senha" placeholder="Digite sua Senha">
+        <div id="login-section">
+            <h2>Login</h2>
+            <input type="text" id="ra" placeholder="Digite seu RA">
+            <input type="password" id="senha" placeholder="Digite sua Senha">
+            <button onclick="login()">Login</button>
+        </div>
 
-        <button onclick="mostrarPendentes()">Atividades Pendentes</button>
-        <button onclick="mostrarExpiradas()">Atividades Expiradas</button>
-
-        <div class="activities" id="activitiesList"></div>
+        <div id="atividades-section" class="hidden">
+            <h2>Atividades</h2>
+            <button onclick="mostrarPendentes()">Atividades Pendentes</button>
+            <button onclick="mostrarExpiradas()">Atividades Expiradas</button>
+            <div class="activities" id="activitiesList"></div>
+        </div>
 
         <footer>Desenvolvido por <strong>kel_mod</strong> | Servidor: <strong>runacode</strong></footer>
     </div>
@@ -93,21 +101,32 @@
     <script>
         const usuario = { ra: "654321", senha: "4321" };
 
+        function login() {
+            if (validarLogin()) {
+                document.getElementById("login-section").classList.add("hidden");
+                document.getElementById("atividades-section").classList.remove("hidden");
+            } else {
+                alert("RA ou senha incorretos!");
+            }
+        }
+
         function validarLogin() {
             const ra = document.getElementById("ra").value;
             const senha = document.getElementById("senha").value;
             return ra === usuario.ra && senha === usuario.senha;
         }
 
-        async function carregarAtividades() {
+        async function carregarAtividades(status = '') {
             try {
-                // Chama a nossa própria API, que está na Vercel
-                const response = await fetch('/api/atividades');
+                const url = status ? `/api/atividades?status=${status}` : '/api/atividades';
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 return await response.json();
             } catch (error) {
-                console.error('Erro ao carregar atividades da nossa API:', error);
+                console.error('Erro ao carregar atividades da API:', error);
                 console.log('Carregando dados do arquivo local (atividades.json) como fallback.');
-                // Fallback para o arquivo local
                 try {
                     const response = await fetch('atividades.json');
                     return await response.json();
@@ -119,35 +138,30 @@
         }
 
         async function mostrarPendentes() {
-            if (!validarLogin()) {
-                alert("RA ou senha incorretos!");
-                return;
-            }
-
-            const atividades = await carregarAtividades();
-            atualizarLista(atividades.pendentes, "Atividades Pendentes");
+            const data = await carregarAtividades();
+            atualizarLista(data.pendentes, "Atividades Pendentes");
         }
 
         async function mostrarExpiradas() {
-            if (!validarLogin()) {
-                alert("RA ou senha incorretos!");
-                return;
-            }
-
-            const atividades = await carregarAtividades();
-            atualizarLista(atividades.expiradas, "Atividades Expiradas");
+            const data = await carregarAtividades('expiradas');
+            atualizarLista(data.expiradas, "Atividades Expiradas");
         }
 
         function atualizarLista(lista, titulo) {
             const div = document.getElementById("activitiesList");
             div.innerHTML = `<h3>${titulo}</h3>`;
-            if (lista) {
+            if (lista && lista.length > 0) {
                 lista.forEach(a => {
                     const item = document.createElement("div");
                     item.className = "activity";
                     item.textContent = a;
                     div.appendChild(item);
                 });
+            } else {
+                const item = document.createElement("div");
+                item.className = "activity";
+                item.textContent = "Nenhuma atividade encontrada.";
+                div.appendChild(item);
             }
         }
     </script>

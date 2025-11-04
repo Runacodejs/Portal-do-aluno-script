@@ -3,167 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fandangos</title>
+    <title>Fandangos - Login</title>
     <style>
+        /* Variáveis de Cores */
+        :root {
+            --cor-fundo: #121212;
+            --cor-texto-claro: #e0e0e0;
+            --cor-primaria: #FFD700; /* Dourado/Amarelo, lembrando o Fandango */
+            --cor-secundaria: #4682B4; /* Azul Aço, para contraste */
+            --cor-input-fundo: #1e1e1e;
+            --cor-borda-input: #333;
+        }
+
+        /* Estilos gerais */
         body {
-            font-family: "Poppins", sans-serif;
-            background: linear-gradient(135deg, #ffcc33, #ff9933);
-            color: #222;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto-claro);
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
             margin: 0;
+            padding-top: 50px;
+        }
+
+        .login-container {
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Cabeçalho */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--cor-primaria); /* Novo Título em Dourado */
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #a0a0a0;
+            margin: 0;
+        }
+
+        /* Formulário e campos */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--cor-texto-claro);
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            background-color: var(--cor-input-fundo);
+            border: 1px solid var(--cor-borda-input);
+            color: var(--cor-texto-claro);
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Botão "Contas Salvas" */
+        .saved-accounts-btn {
+            align-self: flex-end;
+            background-color: var(--cor-secundaria); /* Azul/Roxo, adaptado do original */
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            background-color: #6a9acb; /* Azul mais claro para o número */
+            padding: 2px 7px;
+            border-radius: 5px;
+            margin-left: 5px;
+            font-size: 12px;
+        }
+
+        /* Campo Senha com ícone */
+        .password-input-wrapper {
+            position: relative;
+        }
+
+        .password-input-wrapper input {
+            padding-right: 50px;
+        }
+
+        .password-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+
+        /* Status de Verificação */
+        .verification-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0 20px 0;
+        }
+
+        .verification-status input[type="radio"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--cor-primaria);
+            border-radius: 50%;
+            background-color: transparent;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            flex-direction: column;
         }
-        .container {
-            background: rgba(255,255,255,0.9);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            width: 320px;
-            text-align: center;
+
+        .verification-status input[type="radio"]:checked::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background-color: var(--cor-primaria);
+            border-radius: 50%;
+            display: block;
         }
-        h1 {
-            margin-bottom: 10px;
-            color: #e67e22;
+
+        .verification-status label {
+            font-weight: normal;
+            font-size: 16px;
+            color: var(--cor-primaria);
         }
-        h2 {
-            margin-bottom: 20px;
-            color: #555;
-        }
-        input {
-            width: 90%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 2px solid #ffb84d;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 14px;
-        }
-        button {
-            width: 95%;
-            padding: 10px;
-            background: #ff9933;
-            border: none;
-            border-radius: 8px;
-            color: #fff;
+
+        /* Botões de Atividades */
+        .activity-btn {
+            background-color: var(--cor-input-fundo);
+            color: var(--cor-texto-claro);
+            border: 1px solid var(--cor-borda-input);
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
-            margin-top: 10px;
+            transition: background-color 0.3s;
         }
-        button:hover {
-            background: #ff8000;
-        }
-        .activities {
-            margin-top: 20px;
-            text-align: left;
-        }
-        .activity {
-            background: rgba(255,204,102,0.4);
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 8px;
-        }
-        footer {
-            margin-top: 25px;
-            font-size: 12px;
-            color: #333;
-            opacity: 0.8;
-            text-align: center;
-        }
-        .hidden {
-            display: none;
+
+        .activity-btn:hover {
+            background-color: #282828;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🍿 Fandangos</h1>
-        <div id="login-section">
-            <h2>Login</h2>
-            <input type="text" id="ra" placeholder="Digite seu RA">
-            <input type="password" id="senha" placeholder="Digite sua Senha">
-            <button onclick="login()">Login</button>
-        </div>
+    <div class="login-container">
+        <header class="header">
+            <h1 class="title">Fandangos</h1>
+            <p class="subtitle">para a comunidade cultural e de eventos!</p>
+        </header>
 
-        <div id="atividades-section" class="hidden">
-            <h2>Atividades</h2>
-            <button onclick="mostrarPendentes()">Atividades Pendentes</button>
-            <button onclick="mostrarExpiradas()">Atividades Expiradas</button>
-            <div class="activities" id="activitiesList"></div>
-        </div>
+        <form class="login-form">
+            <button type="button" class="saved-accounts-btn">
+                Contas Salvas <span class="badge">7</span>
+            </button>
 
-        <footer>Desenvolvido por <strong>kel_mod</strong> | Servidor: <strong>runacode</strong></footer>
+            <label for="ra">RA/CPF</label>
+            <input type="text" id="ra" name="ra" placeholder="Seu código de acesso: 123456790">
+
+            <label for="senha">Senha</label>
+            <div class="password-input-wrapper">
+                <input type="password" id="senha" name="senha" placeholder="Senha">
+                <span class="password-icon" role="img" aria-label="Emoji de violão">🎸</span> 
+            </div>
+
+            <div class="verification-status">
+                <input type="radio" id="verificando" name="status" checked disabled>
+                <label for="verificando">Verificando...</label>
+            </div>
+
+            <button type="button" class="activity-btn pending-btn">Próximos Eventos</button>
+            <button type="button" class="activity-btn expired-btn">Eventos Anteriores</button>
+        </form>
     </div>
-
-    <script>
-        const usuario = { ra: "0001114991594", senha: "Pagliato@1" };
-
-        function login() {
-            if (validarLogin()) {
-                document.getElementById("login-section").classList.add("hidden");
-                document.getElementById("atividades-section").classList.remove("hidden");
-            } else {
-                alert("RA ou senha incorretos!");
-            }
-        }
-
-        function validarLogin() {
-            const ra = document.getElementById("ra").value;
-            const senha = document.getElementById("senha").value;
-            return ra === usuario.ra && senha === usuario.senha;
-        }
-
-        async function carregarAtividades(status = '') {
-            try {
-                const url = status ? `/api/atividades?status=${status}` : '/api/atividades';
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return await response.json();
-            } catch (error) {
-                console.error('Erro ao carregar atividades da API:', error);
-                console.log('Carregando dados do arquivo local (atividades.json) como fallback.');
-                try {
-                    const response = await fetch('atividades.json');
-                    return await response.json();
-                } catch (fileError) {
-                    console.error('Erro ao carregar o arquivo local:', fileError);
-                    return { pendentes: [], expiradas: [] };
-                }
-            }
-        }
-
-        async function mostrarPendentes() {
-            const data = await carregarAtividades();
-            atualizarLista(data.pendentes, "Atividades Pendentes");
-        }
-
-        async function mostrarExpiradas() {
-            const data = await carregarAtividades('expiradas');
-            atualizarLista(data.expiradas, "Atividades Expiradas");
-        }
-
-        function atualizarLista(lista, titulo) {
-            const div = document.getElementById("activitiesList");
-            div.innerHTML = `<h3>${titulo}</h3>`;
-            if (lista && lista.length > 0) {
-                lista.forEach(a => {
-                    const item = document.createElement("div");
-                    item.className = "activity";
-                    item.textContent = a;
-                    div.appendChild(item);
-                });
-            } else {
-                const item = document.createElement("div");
-                item.className = "activity";
-                item.textContent = "Nenhuma atividade encontrada.";
-                div.appendChild(item);
-            }
-        }
-    </script>
 </body>
 </html>
